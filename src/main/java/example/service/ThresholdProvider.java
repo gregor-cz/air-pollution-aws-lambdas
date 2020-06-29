@@ -11,14 +11,17 @@ import example.model.ThresholdParameter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
-public class ThresholdsProvider {
+public class ThresholdProvider {
 
     private static final String AIR_POLLUTION_THRESHOLDS_TABLE = "air_pollution_thresholds2";
 
     private DynamoDB dynamoDB;
 
-    public ThresholdsProvider() {
+    private Map<String, ThresholdParameter> thresholds;
+
+    public ThresholdProvider() {
         this.dynamoDB = createDynamoDBClient();
     }
 
@@ -27,7 +30,7 @@ public class ThresholdsProvider {
         return new DynamoDB(awsDynamoDb);
     }
 
-    public Map<String, ThresholdParameter> getThresholds() {
+    private Map<String, ThresholdParameter> getThresholds() {
 
         Gson gson = new GsonBuilder().create();
 
@@ -46,4 +49,12 @@ public class ThresholdsProvider {
 
         return airPollutionThresholds;
     }
+
+    public ThresholdParameter getThreshold(String parameterName){
+        if (Objects.isNull(thresholds)) {
+            thresholds = getThresholds();
+        }
+        return thresholds.get(parameterName);
+    }
+
 }

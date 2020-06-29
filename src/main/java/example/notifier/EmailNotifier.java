@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 
 public class EmailNotifier {
 
-
-
     public String sendNotification(String snsTopic, String emailSubject, String emailContent, Map<String, String> attributes) {
 
         SnsClient snsClient = SnsClient.builder().build();
@@ -36,7 +34,7 @@ public class EmailNotifier {
 
         Map<String, MessageAttributeValue> notificationAttributes = attributes.entrySet()
                 .stream()
-                .collect(Collectors.toMap(attr -> attr.getKey(),
+                .collect(Collectors.toMap(Map.Entry::getKey,
                         attr -> MessageAttributeValue.builder().dataType("String").stringValue(attr.getValue()).build()));
 
         return notificationAttributes;

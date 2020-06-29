@@ -7,7 +7,7 @@ import java.util.Set;
 
 @AllArgsConstructor
 @Getter
-public class AirPollutionNotification {
+public class AirQualityNotification {
     private String stationId;
-    private Set<AirPollutionParameter> parameters;
+    private Set<AirQualityData> parameters;
 }
