@@ -1,21 +1,21 @@
 package example.utils;
 
-import example.model.AirPollutionNotification;
-import example.model.AirPollutionParameter;
+import example.model.AirQualityNotification;
+import example.model.AirQualityData;
 
 import java.util.stream.Collectors;
 
 public class NotificationUtils {
 
-    public static String toEmailContent(AirPollutionParameter airPollutionParameter) {
+    public static String toEmailContent(AirQualityData airQualityData) {
         return String.format("%s current value: %s ug/m3, warning level: %d %%",
-                airPollutionParameter.getName(),
-                airPollutionParameter.getCurrentValue(),
-                airPollutionParameter.getPercentChange());
+                airQualityData.getName(),
+                airQualityData.getCurrentValue(),
+                airQualityData.getPercentChange());
     }
 
-    public static  String toEmailContent(AirPollutionNotification airPollutionNotification) {
-        String notificationString = airPollutionNotification.getParameters()
+    public static  String toEmailContent(AirQualityNotification airQualityNotification) {
+        String notificationString = airQualityNotification.getParameters()
                 .stream().map(NotificationUtils::toEmailContent).collect(Collectors.joining("\n"));
 
         return "The following parameters of air pollution have exceeded threshold values: \n\n" + notificationString;
