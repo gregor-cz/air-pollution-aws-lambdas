@@ -3,17 +3,18 @@ package example.service;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.*;
-import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
-import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import example.model.AirPollutionThreshold;
+import example.model.ThresholdParameter;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class ThresholdsProvider {
 
-    private static final String AIR_POLLUTION_THRESHOLDS_TABLE = "air_pollution_thresholds";
+    private static final String AIR_POLLUTION_THRESHOLDS_TABLE = "air_pollution_thresholds2";
 
     private DynamoDB dynamoDB;
 
@@ -26,23 +27,23 @@ public class ThresholdsProvider {
         return new DynamoDB(awsDynamoDb);
     }
 
-    public AirPollutionThreshold getThreshold() {
+    public Map<String, ThresholdParameter> getThresholds() {
 
         Gson gson = new GsonBuilder().create();
 
-        Table reply = dynamoDB.getTable(AIR_POLLUTION_THRESHOLDS_TABLE);
+        Table table = dynamoDB.getTable(AIR_POLLUTION_THRESHOLDS_TABLE);
 
-        QuerySpec spec = new QuerySpec()
-                .withKeyConditionExpression("id = :v_id")
-                .withValueMap(new ValueMap()
-                        .withNumber(":v_id", 1));
+        ItemCollection<ScanOutcome> scan = table.scan(new ScanSpec());
 
-        ItemCollection<QueryOutcome> items;
-        items = reply.query(spec);
+        Map<String, ThresholdParameter> airPollutionThresholds = new HashMap<>();
 
-        Iterator<Item> iterator = items.iterator();
+        Iterator<Item> iterator = scan.iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            ThresholdParameter thresholdParameter = gson.fromJson(item.toJSON(), ThresholdParameter.class);
+            airPollutionThresholds.put(thresholdParameter.getId(), thresholdParameter);
+        }
 
-        return gson.fromJson(iterator.next().toJSON(), AirPollutionThreshold.class);
+        return airPollutionThresholds;
     }
-
 }
