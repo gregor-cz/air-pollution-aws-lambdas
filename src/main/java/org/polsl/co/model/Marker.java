@@ -1,5 +1,5 @@
 
-package example.model;
+package org.polsl.co.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;

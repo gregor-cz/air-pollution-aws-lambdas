@@ -8,7 +8,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import example.model.SensorData;
+import org.polsl.co.model.SensorData;
 
 // Handler value: HandlerAirPollutionData
 public class HandlerAirPollutionData implements RequestHandler<SensorData, SensorData> {

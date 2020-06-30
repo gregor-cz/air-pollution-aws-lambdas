@@ -1,4 +1,4 @@
-package example.service;
+package org.polsl.co.service;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
@@ -6,7 +6,7 @@ import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import example.model.ThresholdParameter;
+import org.polsl.co.model.ThresholdParameter;
 
 import java.util.HashMap;
 import java.util.Iterator;

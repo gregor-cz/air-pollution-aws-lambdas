@@ -1,7 +1,7 @@
-package example.utils;
+package org.polsl.co.utils;
 
-import example.model.AirQualityNotification;
-import example.model.AirQualityData;
+import org.polsl.co.model.AirQualityNotification;
+import org.polsl.co.model.AirQualityData;
 
 import java.util.stream.Collectors;
 

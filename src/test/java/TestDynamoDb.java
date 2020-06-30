@@ -7,7 +7,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import example.model.AirPollutionThresholds;
+import org.polsl.co.model.AirPollutionThresholds;
 
 import java.util.Iterator;
 

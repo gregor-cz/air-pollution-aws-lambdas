@@ -1,23 +1,24 @@
-package example;
+package org.polsl.co.handlers;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import example.model.AirQualityNotification;
-import example.model.SensorData;
-import example.notifier.EmailNotifier;
-import example.service.AirQualityService;
+import org.polsl.co.model.AirQualityNotification;
+import org.polsl.co.model.SensorData;
+import org.polsl.co.notifier.EmailNotifier;
+import org.polsl.co.service.AirQualityService;
+import org.polsl.co.configuration.Configuration;
+import org.polsl.co.utils.NotificationUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static example.configuration.AwsConfiguration.AIR_POLLUTION_TOPIC;
-import static example.utils.NotificationUtils.toEmailContent;
+import static org.polsl.co.utils.NotificationUtils.toEmailContent;
 
-public class ProcessAirPollutionData implements RequestHandler<SensorData, String> {
+public class ProcessAirQualityDataHandler implements RequestHandler<SensorData, String> {
 
     private static final String STATION_ID_KEY = "station_id";
     private static final String EMAIL_SUBJECT = "Air quality notification";
@@ -48,7 +49,7 @@ public class ProcessAirPollutionData implements RequestHandler<SensorData, Strin
 
     private String sendNotification(AirQualityNotification data) {
         Map<String, String> attributes = createNotificationParams(data.getStationId());
-        return emailNotifier.sendNotification(AIR_POLLUTION_TOPIC, EMAIL_SUBJECT, toEmailContent(data), attributes);
+        return emailNotifier.sendNotification(Configuration.AIR_POLLUTION_TOPIC, EMAIL_SUBJECT, NotificationUtils.toEmailContent(data), attributes);
     }
 
     private Map<String, String> createNotificationParams(String stattionId) {

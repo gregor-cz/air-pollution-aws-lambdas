@@ -1,4 +1,4 @@
-package example.model;
+package org.polsl.co.model;
 
 import lombok.Data;
 

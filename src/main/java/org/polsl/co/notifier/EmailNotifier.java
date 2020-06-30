@@ -1,4 +1,4 @@
-package example.notifier;
+package org.polsl.co.notifier;
 
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.MessageAttributeValue;

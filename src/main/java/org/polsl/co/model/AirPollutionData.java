@@ -1,4 +1,4 @@
-package example.model;
+package org.polsl.co.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

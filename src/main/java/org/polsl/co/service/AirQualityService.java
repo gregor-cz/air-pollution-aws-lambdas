@@ -1,9 +1,9 @@
-package example.service;
+package org.polsl.co.service;
 
-import example.model.AirQualityNotification;
-import example.model.AirQualityData;
-import example.model.SensorData;
-import example.model.ThresholdParameter;
+import org.polsl.co.model.AirQualityNotification;
+import org.polsl.co.model.AirQualityData;
+import org.polsl.co.model.SensorData;
+import org.polsl.co.model.ThresholdParameter;
 
 import java.util.*;
 import java.util.stream.Collectors;
