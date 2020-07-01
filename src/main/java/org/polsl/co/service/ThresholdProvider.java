@@ -13,9 +13,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-public class ThresholdProvider {
+import static org.polsl.co.configuration.Configuration.AIR_QUALITY_THRESHOLDS_TABLE;
 
-    private static final String AIR_POLLUTION_THRESHOLDS_TABLE = "air_pollution_thresholds2";
+public class ThresholdProvider {
 
     private DynamoDB dynamoDB;
 
@@ -34,7 +34,7 @@ public class ThresholdProvider {
 
         Gson gson = new GsonBuilder().create();
 
-        Table table = dynamoDB.getTable(AIR_POLLUTION_THRESHOLDS_TABLE);
+        Table table = dynamoDB.getTable(AIR_QUALITY_THRESHOLDS_TABLE);
 
         ItemCollection<ScanOutcome> scan = table.scan(new ScanSpec());
 
@@ -56,5 +56,4 @@ public class ThresholdProvider {
         }
         return thresholds.get(parameterName);
     }
-
 }
