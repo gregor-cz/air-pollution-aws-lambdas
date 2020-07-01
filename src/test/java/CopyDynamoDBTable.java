@@ -11,7 +11,7 @@ import org.polsl.co.model.AirPollutionThresholds;
 
 import java.util.Iterator;
 
-public class TestDynamoDb {
+public class CopyDynamoDBTable {
 
     public static void main(String[] args) {
 
@@ -22,27 +22,10 @@ public class TestDynamoDb {
                 .build();
         DynamoDB dynamoDB = new DynamoDB(client);
 
-        Table table = dynamoDB.getTable("air_pollution_thresholds");
+        Table table = dynamoDB.getTable("air_pollution_data2");
 
+        Table raw_data = dynamoDB.getTable("raw_data");
 
-
-        QuerySpec spec = new QuerySpec()
-                .withKeyConditionExpression("id = :v_id")
-                .withValueMap(new ValueMap()
-                        .withNumber(":v_id", 1));
-
-        ItemCollection<QueryOutcome> items;
-        items = table.query(spec);
-
-        Iterator<Item> iterator = items.iterator();
-        Item item = null;
-//        while (iterator.hasNext()) {
-//            item = iterator.next();
-//            System.out.println(item.toJSON());
-//            System.out.println(item.getNumber("pm25"));
-//        }
-
-        AirPollutionThresholds airPollutionThresholds = gson.fromJson(iterator.next().toJSON(), AirPollutionThresholds.class);
 
         ItemCollection<ScanOutcome> scan = table.scan(new ScanSpec());
 
@@ -51,7 +34,8 @@ public class TestDynamoDb {
         Iterator<Item> iter = scan.iterator();
         while (iter.hasNext()) {
             Item item2 = iter.next();
-            System.out.println(item2.toString());
+            //System.out.println(item2.toString());
+            raw_data.putItem(item2);
         }
     }
 }

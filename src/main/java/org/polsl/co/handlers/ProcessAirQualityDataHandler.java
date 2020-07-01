@@ -7,10 +7,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.polsl.co.model.AirQualityNotification;
 import org.polsl.co.model.SensorData;
-import org.polsl.co.notifier.EmailNotifier;
+import org.polsl.co.notifier.SnsNotifier;
 import org.polsl.co.service.AirQualityService;
 import org.polsl.co.configuration.Configuration;
-import org.polsl.co.utils.NotificationUtils;
+import software.amazon.awssdk.regions.Region;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +26,7 @@ public class ProcessAirQualityDataHandler implements RequestHandler<SensorData, 
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final AirQualityService airQualityService = new AirQualityService();
-    private final EmailNotifier emailNotifier = new EmailNotifier();
+    private final SnsNotifier snsNotifier = new SnsNotifier();
 
     private LambdaLogger logger;
 
@@ -49,7 +49,9 @@ public class ProcessAirQualityDataHandler implements RequestHandler<SensorData, 
 
     private String sendNotification(AirQualityNotification data) {
         Map<String, String> attributes = createNotificationParams(data.getStationId());
-        return emailNotifier.sendNotification(Configuration.AIR_POLLUTION_TOPIC, EMAIL_SUBJECT, NotificationUtils.toEmailContent(data), attributes);
+        String result1 = snsNotifier.sendNotification(Region.US_EAST_2, Configuration.EMAIL_POLLUTION_TOPIC, EMAIL_SUBJECT, toEmailContent(data), attributes);
+        String result2 = snsNotifier.sendNotification(Region.US_WEST_2, Configuration.SMS_NOTIFICATION_TOPIC, EMAIL_SUBJECT, toEmailContent(data), attributes);
+        return  result1 + result2;
     }
 
     private Map<String, String> createNotificationParams(String stattionId) {

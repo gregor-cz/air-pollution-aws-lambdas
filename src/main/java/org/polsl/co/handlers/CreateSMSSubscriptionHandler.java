@@ -13,9 +13,9 @@ import software.amazon.awssdk.services.sns.model.SnsResponse;
 
 import java.util.List;
 
-import static org.polsl.co.configuration.Configuration.EMAIL_POLLUTION_TOPIC;
+import static org.polsl.co.configuration.Configuration.SMS_NOTIFICATION_TOPIC;
 
-public class CreateEmailSubscriptionHandler implements RequestHandler<SNSEvent, String> {
+public class CreateSMSSubscriptionHandler implements RequestHandler<SNSEvent, String> {
 
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private SnsSubscriber snsSubscriber = new SnsSubscriber();
@@ -30,11 +30,12 @@ public class CreateEmailSubscriptionHandler implements RequestHandler<SNSEvent, 
 
         RegisterUserData registerUserData = convertToRegisterData(event);
 
-        List<SnsResponse> smsSubscription = snsSubscriber.createEmailSubscription(Region.US_EAST_2, EMAIL_POLLUTION_TOPIC,
-                registerUserData.getEmail(), registerUserData.getStationId());
+        List<SnsResponse> smsSubscription = snsSubscriber.createSmsSubscription(Region.US_WEST_2, SMS_NOTIFICATION_TOPIC,
+                registerUserData.getPhoneNumber(), registerUserData.getStationId());
 
         return gson.toJson(smsSubscription);
     }
+
 
     private RegisterUserData convertToRegisterData(SNSEvent event) {
         String raw = event.getRecords().get(0).getSNS().getMessage();

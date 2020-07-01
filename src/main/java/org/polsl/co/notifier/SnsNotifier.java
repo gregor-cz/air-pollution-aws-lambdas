@@ -1,5 +1,7 @@
 package org.polsl.co.notifier;
 
+
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sns.SnsClient;
 import software.amazon.awssdk.services.sns.model.MessageAttributeValue;
 import software.amazon.awssdk.services.sns.model.PublishRequest;
@@ -8,24 +10,24 @@ import software.amazon.awssdk.services.sns.model.PublishResponse;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class EmailNotifier {
+public class SnsNotifier {
 
-    public String sendNotification(String snsTopic, String emailSubject, String emailContent, Map<String, String> attributes) {
+    public String sendNotification(Region region, String snsTopic, String messageSubject, String messageContent, Map<String, String> attributes) {
 
-        SnsClient snsClient = SnsClient.builder().build();
-        PublishRequest publishRequest = createPublishRequest(snsTopic, emailSubject, emailContent, attributes);
+        SnsClient snsClient = SnsClient.builder().region(region).build();
+        PublishRequest publishRequest = createPublishRequest(snsTopic, messageSubject, messageContent, attributes);
         PublishResponse publish = snsClient.publish(publishRequest);
 
         return publish.toString();
     }
 
-    public PublishRequest createPublishRequest(String snsTopic, String emailSubject, String emailContent, Map<String, String> attributes) {
+    private PublishRequest createPublishRequest(String snsTopic, String messageSubject, String messageContent, Map<String, String> attributes) {
         Map<String, MessageAttributeValue> messageAttributes = createMessageAttributes(attributes);
 
         return PublishRequest.builder()
                 .topicArn(snsTopic)
-                .subject(emailSubject)
-                .message(emailContent)
+                .subject(messageSubject)
+                .message(messageContent)
                 .messageAttributes(messageAttributes)
                 .build();
     }
